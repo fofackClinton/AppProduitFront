@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Produit } from '../model/produit.model';
@@ -12,18 +13,28 @@ import { RouterLink } from '@angular/router';
 })
 export class ProduitComponent implements OnInit {
 
-produits : Produit[]; //un tableau de Produit
-constructor(private produitService: ProduitService ) {
-this.produits = produitService.listeProduits();
-}
-supprimerProduit(p: Produit)
-{
-//console.log(p);
-let conf = confirm("Etes-vous sûr ?");
-if (conf)
-this.produitService.supprimerProduit(p);
+produits! : Produit[]; //un tableau de Produit
+ constructor(private produitService: ProduitService, public authService: AuthService ) {}
+
+   ngOnInit() {
+    this.chargerProduits();
+     }
+
+    chargerProduits(){
+      this.produitService.listeProduit().subscribe(prods => {
+        console.log(prods);
+        this.produits = prods;
+      });
+    }
+
+    supprimerProduit(p: Produit)
+    {
+      let conf = confirm("Etes-vous sûr ?");
+      if (conf)
+      this.produitService.supprimerProduit(p.idProduit).subscribe(() => {
+        console.log("produit supprimé");
+        this.chargerProduits();
+           });
+    }
 }
 
-  ngOnInit(): void {
-  }
-}
