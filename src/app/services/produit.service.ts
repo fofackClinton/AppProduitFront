@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { Produit } from '../model/produit.model';
 import { Categorie } from '../model/categorie.model';
@@ -6,7 +7,7 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const httpOptions = {
-  headers: new HttpHeaders( {'Content-Type': 'application/json'} )
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 @Injectable({
   providedIn: 'root'
@@ -18,18 +19,21 @@ export class ProduitService {
   produit!: Produit;
   categories!: Categorie[];
 
-   constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private AuthService: AuthService) { }
   listeProduit(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(environment.apiUrl+"/all");
+    //récupération du jwt du local storage
+    let jwt = this.AuthService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.get<Produit[]>(environment.apiUrl + "/all", { headers: httpHeaders });
   }
 
   ajouterProduit(prod: Produit): Observable<Produit> {
-    return this.http.post<Produit>(environment.apiUrl, prod, httpOptions);
-  }
-
-  supprimerProduit(id: number) {
-    const url = `${environment.apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions);
+    //récupération du jwt du local storage
+    let jwt = this.AuthService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.post<Produit>(environment.apiUrl, prod, { headers: httpHeaders });
   }
 
   consulterProduit(id: number): Observable<Produit> {
@@ -37,8 +41,8 @@ export class ProduitService {
     return this.http.get<Produit>(url);
   }
 
-  listeCategories():Observable<Categorie[]>{
-    return this.http.get<Categorie[]>(environment.apiUrl+"/cat");
+  listeCategories(): Observable<Categorie[]> {
+    return this.http.get<Categorie[]>(environment.apiUrl + "/cat");
   }
 
 
