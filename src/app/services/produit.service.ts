@@ -20,15 +20,12 @@ export class ProduitService {
   categories!: Categorie[];
 
   constructor(private http: HttpClient, private AuthService: AuthService) { }
+
   listeProduit(): Observable<Produit[]> {
     return this.http.get<Produit[]>(environment.apiUrl + "/all");
   }
 
   ajouterProduit(prod: Produit): Observable<Produit> {
-    //récupération du jwt du local storage
-    let jwt = this.AuthService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.post<Produit>(environment.apiUrl, prod);
   }
 

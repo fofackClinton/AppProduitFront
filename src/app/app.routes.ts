@@ -5,6 +5,7 @@ import { UpdateProduitComponent } from './update-produit/update-produit.componen
 import { RechercheParCatgegoryComponent } from './recherche-par-catgegory/recherche-par-catgegory.component';
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
 
@@ -12,6 +13,7 @@ export const routes: Routes = [
   {path: 'add-produit', component: AddProduitComponent},
   {path: "updateProduit/:id", component: UpdateProduitComponent},
   {path:"rechercheParCategory", component: RechercheParCatgegoryComponent},
+  {path:'register',component:RegisterComponent},
   {path:  'login', component: LoginComponent},
   {path:  'app-forbidden', component: ForbiddenComponent},
   {path: "", redirectTo: 'produits', pathMatch: 'full'},

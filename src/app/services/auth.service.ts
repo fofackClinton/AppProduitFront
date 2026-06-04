@@ -72,4 +72,9 @@ export class AuthService {
     return this.token;
   }
 
+  registerUser(user: User) {
+    return this.http.post<User>(this.apiUrl + '/register', user,
+      { observe: 'response' });
+  }
+  
 }
